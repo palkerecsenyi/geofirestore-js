@@ -54,25 +54,6 @@ export class GeoQuery {
   }
 
   /**
-   * Attaches a listener for `GeoQuerySnapshot` events.
-   *
-   * @param onNext A callback to be called every time a new `GeoQuerySnapshot` is available.
-   * @param onError A callback to be called if the listen fails or is cancelled. Since multuple queries occur only the failed query will
-   * cease.
-   * @return An unsubscribe function that can be called to cancel the snapshot listener.
-   */
-  get onSnapshot(): ((onNext: (snapshot: GeoQuerySnapshot) => void, onError?: (error: Error) => void) => () => void) {
-    return (onNext: (snapshot: GeoQuerySnapshot) => void, onError?: (error: Error) => void): (() => void) => {
-      if (this._center && this._radius) {
-        return new GeoJoinerOnSnapshot(this._generateQuery(), this._queryCriteria, onNext, onError).unsubscribe();
-      } else {
-        const query = this._limit ? this._query.limit(this._limit) : this._query;
-        return (query as GeoFirestoreTypes.web.Query).onSnapshot((snapshot) => onNext(new GeoQuerySnapshot(snapshot)), onError);
-      }
-    };
-  }
-
-  /**
    * Executes the query and returns the results as a GeoQuerySnapshot.
    *
    * WEB CLIENT ONLY
@@ -126,6 +107,26 @@ export class GeoQuery {
     this._radius = newGeoQueryCriteria.radius || this._radius;
 
     return new GeoQuery(this._query, this._queryCriteria);
+  }
+
+  /**
+   * Attaches a listener for `GeoQuerySnapshot` events.
+   *
+   * @param onNext A callback to be called every time a new `GeoQuerySnapshot` is available.
+   * @param onError A callback to be called if the listen fails or is cancelled. Since multuple queries occur only the failed query will
+   * cease.
+   * @return An unsubscribe function that can be called to cancel the snapshot listener.
+   */
+  onSnapshot(
+    onNext: (snapshot: GeoQuerySnapshot) => void,
+    onError?: (error: Error) => void,
+    ): () => void {
+      if (this._center && this._radius) {
+        return new GeoJoinerOnSnapshot(this._generateQuery(), this._queryCriteria, onNext, onError).unsubscribe();
+      } else {
+        const query = this._limit ? this._query.limit(this._limit) : this._query;
+        return (query as GeoFirestoreTypes.web.Query).onSnapshot((snapshot) => onNext(new GeoQuerySnapshot(snapshot)), onError);
+      }
   }
 
   /**

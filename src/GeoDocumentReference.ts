@@ -41,22 +41,6 @@ export class GeoDocumentReference {
   }
 
   /**
-   * Attaches a listener for GeoDocumentSnapshot events. You may either pass individual `onNext` and `onError` callbacks.
-   *
-   * @param onNext A callback to be called every time a new `GeoDocumentSnapshot` is available.
-   * @param onError A callback to be called if the listen fails or is cancelled. No further callbacks will occur.
-   * @return An unsubscribe function that can be called to cancel the snapshot listener.
-   */
-  get onSnapshot(): ((onNext: (snapshot: GeoDocumentSnapshot) => void, onError?: (error: Error) => void) => () => void) {
-    return (onNext?: (snapshot: GeoDocumentSnapshot) => void, onError?: (error: Error) => void) => {
-      return (this._document as GeoFirestoreTypes.web.DocumentReference).onSnapshot(
-        (snapshot) => onNext(new GeoDocumentSnapshot(snapshot)),
-        (error) => { if (onError) { onError(error); } }
-      );
-    };
-  }
-
-  /**
    * A reference to the GeoCollection to which this GeoDocumentReference belongs.
    */
   get parent(): GeoCollectionReference {
@@ -119,6 +103,23 @@ export class GeoDocumentReference {
         .isEqual(other['_document'] as GeoFirestoreTypes.cloud.DocumentReference);
     }
     return (this._document as GeoFirestoreTypes.cloud.DocumentReference).isEqual(other as GeoFirestoreTypes.cloud.DocumentReference);
+  }
+
+  /**
+   * Attaches a listener for GeoDocumentSnapshot events. You may either pass individual `onNext` and `onError` callbacks.
+   *
+   * @param onNext A callback to be called every time a new `GeoDocumentSnapshot` is available.
+   * @param onError A callback to be called if the listen fails or is cancelled. No further callbacks will occur.
+   * @return An unsubscribe function that can be called to cancel the snapshot listener.
+   */
+  onSnapshot(
+    onNext: (snapshot: GeoDocumentSnapshot) => void,
+    onError?: (error: Error) => void
+  ): () => void {
+    return (this._document as GeoFirestoreTypes.web.DocumentReference).onSnapshot(
+      (snapshot) => onNext(new GeoDocumentSnapshot(snapshot)),
+      (error) => { if (onError) { onError(error); } }
+    );
   }
 
   /**
