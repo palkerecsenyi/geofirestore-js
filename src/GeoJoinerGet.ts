@@ -9,7 +9,7 @@ export class GeoJoinerGet {
   private _docs: Map<string, GeoFirestoreTypes.web.QueryDocumentSnapshot> = new Map();
 
   /**
-   * @param snapshots An array of snpashots from a Firestore Query `get` call.
+   * @param snapshots An array of snapshots from a Firestore Query `get` call.
    * @param _queryCriteria The query criteria of geo based queries, includes field such as center, radius, and limit.
    */
   constructor(snapshots: GeoFirestoreTypes.web.QuerySnapshot[], private _queryCriteria: GeoFirestoreTypes.QueryCriteria) {
