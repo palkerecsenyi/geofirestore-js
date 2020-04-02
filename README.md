@@ -36,7 +36,7 @@ Or you can use GeoFirestore via CDN:
 
 ## Example Usage
 
-Assume you are building an app to rate bars and you store all information for a bar, e.g. name, business hours and price range, and you want to add the possibility for users to search for bars in their vicinity. This is where GeoFirestore comes in. You can store each bar using GeoFirestore, using the location to build an easily queryable document. GeoFirestore then allows you to easily query which bars are nearby in a simalar fashion as `geofire` but will also return the bar information (not just the key or location).
+Assume you are building an app to rate bars and you store all information for a bar, e.g. name, business hours and price range, and you want to add the possibility for users to search for bars in their vicinity. This is where GeoFirestore comes in. You can store each bar using GeoFirestore, using the location to build an easily queryable document. GeoFirestore then allows you to easily query which bars are nearby in a similar fashion to `geofire` but will also return the bar information (not just the key or location).
 
 ### Examples
 
@@ -93,7 +93,7 @@ Simple. Easy. And very similar with how Firestore handles a `get` from a Firesto
 
 ## Limitations & Considerations
 
-Internally GeoFirestore creates multiple geohashes around a requested area. It queries them and furter calculations on the seperate results are done within the libary. Because of this the additional filtering methods such as `orderBy`, `startAt` and `endAt` can not be passed though GeoFirestore to [Cloud Firestore](https://firebase.google.com/docs/firestore/) at this time.
+Internally GeoFirestore creates multiple geohashes around a requested area. It queries them and further calculations on the separate results are done within the library. Because of this the additional filtering methods such as `orderBy`, `startAt` and `endAt` can not be passed though GeoFirestore to [Cloud Firestore](https://firebase.google.com/docs/firestore/) at this time.
 
 ### Data Structure
 
